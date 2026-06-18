@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Dashboard Workshop</title>
+<link rel="stylesheet" href="css/dashboard.css">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+</head>
+<body>
+
+<div class="bg"></div>
+
+<div class="sidebar">
+    <div class="logo"><h2>Workshop</h2></div>
+    <ul>
+        <a href="dashboard.html"><li class="active"><i class="fa-solid fa-chart-line"></i> Dashboard</li></a>
+        <a href="peserta.html"><li><i class="fa-solid fa-users"></i> Peserta</li></a>
+        <a href="absensi.html"><li><i class="fa-solid fa-calendar-check"></i> Absensi</li></a>
+        <a href="sertifikat.html"><li><i class="fa-solid fa-award"></i> Sertifikat</li></a>
+        <a href="index.html"><li><i class="fa-solid fa-right-from-bracket"></i> Logout</li></a>
+    </ul>
+</div>
+
+<div class="main-content">
+    <div class="topbar">
+        <div class="title">
+            <h1>Dashboard Admin</h1>
+            <p>Selamat datang kembali</p>
+        </div>
+        <div class="profile">
+            <img src="https://i.pravatar.cc/150?img=32">
+            <div>
+                <h3>Admin</h3>
+                <span>Administrator</span>
+            </div>
+        </div>
+    </div>
+
+    <div class="cards">
+        <div class="card">
+            <div><h3>Total Peserta</h3><h1 id="totalPeserta">0</h1></div>
+            <i class="fa-solid fa-users"></i>
+        </div>
+        <div class="card">
+            <div><h3>Total Workshop</h3><h1>4</h1></div>
+            <i class="fa-solid fa-book-open"></i>
+        </div>
+        <div class="card">
+            <div><h3>Peserta Hadir</h3><h1 id="totalHadir">0</h1></div>
+            <i class="fa-solid fa-check"></i>
+        </div>
+    </div>
+
+    <div class="table-box">
+        <div class="table-header">
+            <h2>Data Peserta Workshop</h2>
+            <a href="peserta.html"><button>Lihat Semua</button></a>
+        </div>
+        <table>
+            <thead>
+                <tr>
+                    <th>No</th>
+                    <th>Nama</th>
+                    <th>Workshop</th>
+                    <th>Status</th>
+                </tr>
+            </thead>
+            <tbody id="bodyDashboard">
+                <tr><td colspan="4" style="text-align:center;color:#999;">Memuat...</td></tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<script>
+const data = JSON.parse(localStorage.getItem("peserta")) || [];
+const hadir = data.filter(p => p.status === "Hadir").length;
+document.getElementById("totalPeserta").textContent = data.length;
+document.getElementById("totalHadir").textContent = hadir;
+
+const tbody = document.getElementById("bodyDashboard");
+if (data.length === 0) {
+    tbody.innerHTML = `<tr><td colspan="4" style="text-align:center;color:#999;">Belum ada peserta terdaftar.</td></tr>`;
+} else {
+    tbody.innerHTML = data.slice(0, 5).map((p, i) => `
+        <tr>
+            <td>${i+1}</td>
+            <td>${p.nama}</td>
+            <td>${p.workshop}</td>
+            <td><span class="${p.status==='Hadir'?'success':'danger'}">${p.status||'Tidak Hadir'}</span></td>
+        </tr>`).join('');
+}
+</script>
+</body>
+</html>

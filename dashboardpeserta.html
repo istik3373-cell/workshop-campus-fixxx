@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Dashboard Peserta</title>
+<link rel="stylesheet" href="css/dashboardpeserta.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+</head>
+<body>
+
+<div class="dashboard">
+
+    <!-- SIDEBAR -->
+    <div class="sidebar">
+        <h2>Workshop</h2>
+        <ul>
+            <li class="active">
+                <a href="dashboardpeserta.html">
+                    <i class="fa-solid fa-house"></i> Dashboard
+                </a>
+            </li>
+            <li>
+                <a href="workshoppeserta.html">
+                    <i class="fa-solid fa-book"></i> Workshop Saya
+                </a>
+            </li>
+            <li>
+                <a href="absensipeserta.html">
+                    <i class="fa-solid fa-calendar-check"></i> Absensi
+                </a>
+            </li>
+            <li>
+                <a href="sertifikatpeserta.html">
+                    <i class="fa-solid fa-award"></i> Sertifikat
+                </a>
+            </li>
+            <li>
+                <a href="login.html" onclick="return confirm('Yakin ingin logout?')">
+                    <i class="fa-solid fa-right-from-bracket"></i> Logout
+                </a>
+            </li>
+        </ul>
+    </div>
+
+    <!-- MAIN -->
+    <div class="main-content">
+        <div class="header">
+            <h1>Dashboard Peserta</h1>
+            <p>Selamat datang di Sistem Workshop Kampus</p>
+        </div>
+
+        <div class="cards">
+            <div class="card">
+                <i class="fa-solid fa-book"></i>
+                <h3>Workshop Saya</h3>
+                <p id="cardWorkshop">-</p>
+            </div>
+            <div class="card">
+                <i class="fa-solid fa-calendar-check"></i>
+                <h3>Status Absensi</h3>
+                <p id="cardAbsensi">-</p>
+            </div>
+            <div class="card">
+                <i class="fa-solid fa-award"></i>
+                <h3>Sertifikat</h3>
+                <p id="cardSertif">-</p>
+            </div>
+        </div>
+
+        <div class="profile-card">
+            <h2>Profil Peserta</h2>
+            <div id="profileData">
+                <p>Memuat data...</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+const user = JSON.parse(localStorage.getItem("userLogin"));
+if (user) {
+    document.getElementById("profileData").innerHTML = `
+        <p><strong>Nama</strong> : ${user.nama}</p>
+        <p><strong>Email</strong> : ${user.email}</p>
+        <p><strong>NIM</strong> : ${user.nim || '-'}</p>
+        <p><strong>Workshop</strong> : ${user.workshop}</p>
+    `;
+    // Find status from peserta list
+    const semua = JSON.parse(localStorage.getItem("peserta")) || [];
+    const data = semua.find(p => p.email === user.email) || user;
+    document.getElementById("cardWorkshop").textContent = data.workshop || '-';
+    document.getElementById("cardAbsensi").textContent = data.status || 'Belum Dicatat';
+    document.getElementById("cardSertif").textContent = data.sertifikat ? 'Tersedia' : 'Belum Ada';
+} else {
+    document.getElementById("profileData").innerHTML = `<p style="color:#999;">Silakan login terlebih dahulu.</p>`;
+}
+</script>
+</body>
+</html>

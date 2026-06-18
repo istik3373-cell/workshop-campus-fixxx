@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sertifikat</title>
+<link rel="stylesheet" href="css/dashboard.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+<style>
+.modal-overlay {
+    display: none;
+    position: fixed;
+    top: 0; left: 0; width: 100%; height: 100%;
+    background: rgba(0,0,0,0.5);
+    z-index: 999;
+    justify-content: center;
+    align-items: center;
+}
+.modal-overlay.show { display: flex; }
+.modal-box {
+    background: white;
+    border-radius: 16px;
+    padding: 32px;
+    width: 420px;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.2);
+}
+.modal-box h2 { margin-bottom: 16px; color: #1e293b; }
+.modal-box select, .modal-box input {
+    width: 100%;
+    padding: 10px 14px;
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+    font-size: 14px;
+    margin-bottom: 12px;
+    box-sizing: border-box;
+}
+.modal-actions { display: flex; gap: 10px; margin-top: 8px; }
+.btn-buat {
+    background: #6366f1;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: 600;
+    flex: 1;
+}
+.btn-batal {
+    background: #f1f5f9;
+    color: #475569;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: 600;
+    flex: 1;
+}
+.sertif-card {
+    background: linear-gradient(135deg, #6366f1, #8b5cf6);
+    color: white;
+    border-radius: 16px;
+    padding: 24px;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    margin-bottom: 12px;
+    box-shadow: 0 4px 16px rgba(99,102,241,0.25);
+}
+.sertif-card i { font-size: 36px; opacity: 0.85; }
+.sertif-card h3 { margin: 0 0 4px; font-size: 16px; }
+.sertif-card p { margin: 0; font-size: 13px; opacity: 0.8; }
+.btn-tambah-sertif {
+    background: #6366f1;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+.sertif-grid { display: flex; flex-direction: column; gap: 0; }
+</style>
+</head>
+<body>
+
+<div class="bg"></div>
+
+<div class="sidebar">
+    <div class="logo"><h2>Workshop</h2></div>
+    <ul>
+        <a href="dashboard.html"><li><i class="fa-solid fa-chart-line"></i> Dashboard</li></a>
+        <a href="peserta.html"><li><i class="fa-solid fa-users"></i> Peserta</li></a>
+        <a href="absensi.html"><li><i class="fa-solid fa-calendar-check"></i> Absensi</li></a>
+        <a href="sertifikat.html"><li class="active"><i class="fa-solid fa-award"></i> Sertifikat</li></a>
+        <a href="index.html"><li><i class="fa-solid fa-right-from-bracket"></i> Logout</li></a>
+    </ul>
+</div>
+
+<div class="main-content">
+    <div class="topbar">
+        <div class="title">
+            <h1>Sertifikat Workshop</h1>
+            <p>Kelola sertifikat peserta workshop</p>
+        </div>
+        <button class="btn-tambah-sertif" onclick="bukaModal()">
+            <i class="fa-solid fa-plus"></i> Buat Sertifikat
+        </button>
+    </div>
+
+    <div class="table-box">
+        <div id="sertifGrid" class="sertif-grid">
+            <p style="color:#999;text-align:center;">Belum ada sertifikat dibuat.</p>
+        </div>
+    </div>
+</div>
+
+<!-- MODAL -->
+<div class="modal-overlay" id="modalSertif">
+    <div class="modal-box">
+        <h2><i class="fa-solid fa-award" style="color:#6366f1;margin-right:8px;"></i>Buat Sertifikat</h2>
+        <label style="font-size:13px;font-weight:600;color:#475569;">Pilih Peserta</label>
+        <select id="selectPeserta">
+            <option value="">-- Pilih Peserta --</option>
+        </select>
+        <label style="font-size:13px;font-weight:600;color:#475569;">Nama Workshop</label>
+        <input type="text" id="namaWorkshop" placeholder="contoh: Web Developer" />
+        <div class="modal-actions">
+            <button class="btn-batal" onclick="tutupModal()">Batal</button>
+            <button class="btn-buat" onclick="buatSertifikat()">Buat Sertifikat</button>
+        </div>
+    </div>
+</div>
+
+<script>
+function loadSertifikat() {
+    const sertifikats = JSON.parse(localStorage.getItem("sertifikat")) || [];
+    const grid = document.getElementById("sertifGrid");
+    if (sertifikats.length === 0) {
+        grid.innerHTML = `<p style="color:#999;text-align:center;padding:20px;">Belum ada sertifikat dibuat.</p>`;
+        return;
+    }
+    grid.innerHTML = sertifikats.map((s, i) => `
+        <div class="sertif-card">
+            <i class="fa-solid fa-award"></i>
+            <div>
+                <h3>${s.workshop}</h3>
+                <p>${s.nama} &bull; ${s.tanggal}</p>
+            </div>
+        </div>
+    `).join('');
+}
+
+function bukaModal() {
+    const peserta = JSON.parse(localStorage.getItem("peserta")) || [];
+    const select = document.getElementById("selectPeserta");
+    select.innerHTML = `<option value="">-- Pilih Peserta --</option>`;
+    peserta.forEach((p, i) => {
+        select.innerHTML += `<option value="${i}">${p.nama} - ${p.workshop}</option>`;
+    });
+    document.getElementById("modalSertif").classList.add("show");
+}
+
+function tutupModal() {
+    document.getElementById("modalSertif").classList.remove("show");
+    document.getElementById("selectPeserta").value = "";
+    document.getElementById("namaWorkshop").value = "";
+}
+
+function buatSertifikat() {
+    const idx = document.getElementById("selectPeserta").value;
+    const namaWorkshop = document.getElementById("namaWorkshop").value.trim();
+    if (idx === "" || !namaWorkshop) {
+        alert("Pilih peserta dan isi nama workshop terlebih dahulu!");
+        return;
+    }
+    const peserta = JSON.parse(localStorage.getItem("peserta")) || [];
+    const p = peserta[idx];
+
+    const sertifikats = JSON.parse(localStorage.getItem("sertifikat")) || [];
+    sertifikats.push({
+        nama: p.nama,
+        workshop: namaWorkshop,
+        tanggal: new Date().toLocaleDateString("id-ID", {day:'numeric',month:'long',year:'numeric'})
+    });
+    localStorage.setItem("sertifikat", JSON.stringify(sertifikats));
+
+    // Tandai peserta punya sertifikat
+    peserta[idx].sertifikat = true;
+    localStorage.setItem("peserta", JSON.stringify(peserta));
+
+    tutupModal();
+    loadSertifikat();
+    alert(`Sertifikat untuk ${p.nama} berhasil dibuat!`);
+}
+
+loadSertifikat();
+</script>
+</body>
+</html>

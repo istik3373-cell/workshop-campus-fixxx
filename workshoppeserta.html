@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Workshop Saya</title>
+
+<link rel="stylesheet" href="css/workshoppeserta.css">
+
+<link rel="stylesheet"
+href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+</head>
+<body>
+
+<div class="dashboard">
+
+    <!-- SIDEBAR -->
+
+    <div class="sidebar">
+
+        <h2>Workshop</h2>
+
+        <ul>
+
+            <li>
+                <a href="dashboardpeserta.html">
+                    <i class="fa-solid fa-house"></i>
+                    Dashboard
+                </a>
+            </li>
+
+            <li class="active">
+                <a href="workshoppeserta.html">
+                    <i class="fa-solid fa-book"></i>
+                    Workshop Saya
+                </a>
+            </li>
+
+            <li>
+                <a href="absensipeserta.html">
+                    <i class="fa-solid fa-calendar-check"></i>
+                    Absensi
+                </a>
+            </li>
+
+            <li>
+                <a href="sertifikatpeserta.html">
+                    <i class="fa-solid fa-award"></i>
+                    Sertifikat
+                </a>
+            </li>
+
+            <li onclick="logout()">
+                <i class="fa-solid fa-right-from-bracket"></i>
+                Logout
+            </li>
+
+        </ul>
+
+    </div>
+
+    <!-- MAIN -->
+
+    <div class="main-content">
+
+        <div class="header">
+
+            <h1>Workshop Kampus</h1>
+
+            <p>
+                Pilih workshop yang ingin kamu ikuti
+            </p>
+
+        </div>
+
+        <!-- WORKSHOP YANG DIPILIH -->
+
+        <div class="selected-workshop">
+
+            <h3>Workshop Yang Dipilih</h3>
+
+            <p id="workshopDipilih">
+                Belum ada workshop yang dipilih
+            </p>
+
+        </div>
+
+        <!-- CARD -->
+
+        <div class="card-container">
+
+            <div class="workshop-card">
+
+                <img src="https://images.unsplash.com/photo-1498050108023-c5249f4df085">
+
+                <div class="content">
+
+                    <h3>Workshop Web Developer</h3>
+
+                    <p>
+                        Belajar HTML, CSS, JavaScript dan membuat website modern.
+                    </p>
+
+                    <button
+                    class="joinBtn"
+                    data-workshop="Workshop Web Developer">
+
+                        Daftar Workshop
+
+                    </button>
+
+                </div>
+
+            </div>
+
+            <div class="workshop-card">
+
+                <img src="https://images.unsplash.com/photo-1558655146-9f40138edfeb">
+
+                <div class="content">
+
+                    <h3>Workshop UI/UX Design</h3>
+
+                    <p>
+                        Belajar desain aplikasi modern menggunakan Figma.
+                    </p>
+
+                    <button
+                    class="joinBtn"
+                    data-workshop="Workshop UI/UX Design">
+
+                        Daftar Workshop
+
+                    </button>
+
+                </div>
+
+            </div>
+
+            <div class="workshop-card">
+
+                <img src="https://images.unsplash.com/photo-1516321318423-f06f85e504b3">
+
+                <div class="content">
+
+                    <h3>Workshop Cyber Security</h3>
+
+                    <p>
+                        Belajar keamanan jaringan dan sistem informasi.
+                    </p>
+
+                    <button
+                    class="joinBtn"
+                    data-workshop="Workshop Cyber Security">
+
+                        Daftar Workshop
+
+                    </button>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+<script src="js/workshoppeserta.js"></script>
+
+</body>
+</html>

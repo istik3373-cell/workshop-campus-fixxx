@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sertifikat Saya</title>
+<link rel="stylesheet" href="css/dashboardpeserta.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+<style>
+.sertif-card {
+    background: linear-gradient(135deg, #6366f1, #8b5cf6);
+    color: white;
+    border-radius: 16px;
+    padding: 28px 32px;
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    margin: 20px 0;
+    box-shadow: 0 6px 20px rgba(99,102,241,0.3);
+}
+.sertif-card i { font-size: 48px; opacity: 0.9; }
+.sertif-card h2 { margin: 0 0 6px; font-size: 20px; }
+.sertif-card p { margin: 0; opacity: 0.85; font-size: 14px; }
+.empty-box {
+    background: #f8fafc;
+    border-radius: 16px;
+    padding: 40px;
+    text-align: center;
+    color: #94a3b8;
+    margin: 20px 0;
+}
+.empty-box i { font-size: 48px; margin-bottom: 12px; display: block; }
+</style>
+</head>
+<body>
+<div class="dashboard">
+    <div class="sidebar">
+        <h2>Workshop</h2>
+        <ul>
+            <li><a href="dashboardpeserta.html"><i class="fa-solid fa-house"></i> Dashboard</a></li>
+            <li><a href="workshoppeserta.html"><i class="fa-solid fa-book"></i> Workshop Saya</a></li>
+            <li><a href="absensipeserta.html"><i class="fa-solid fa-calendar-check"></i> Absensi</a></li>
+            <li class="active"><a href="sertifikatpeserta.html"><i class="fa-solid fa-award"></i> Sertifikat</a></li>
+            <li><a href="login.html" onclick="return confirm('Yakin ingin logout?')"><i class="fa-solid fa-right-from-bracket"></i> Logout</a></li>
+        </ul>
+    </div>
+    <div class="main-content">
+        <div class="header">
+            <h1>Sertifikat Saya</h1>
+            <p>Daftar sertifikat yang kamu miliki</p>
+        </div>
+        <div id="sertifArea"></div>
+    </div>
+</div>
+<script>
+const user = JSON.parse(localStorage.getItem("userLogin"));
+const area = document.getElementById("sertifArea");
+if (!user) {
+    area.innerHTML = `<div class="empty-box"><i class="fa-solid fa-lock"></i><p>Silakan <a href="login.html">login</a> terlebih dahulu.</p></div>`;
+} else {
+    const sertifikats = JSON.parse(localStorage.getItem("sertifikat")) || [];
+    const milik = sertifikats.filter(s => s.nama.toLowerCase() === user.nama.toLowerCase());
+    if (milik.length === 0) {
+        area.innerHTML = `
+        <div class="empty-box">
+            <i class="fa-solid fa-award"></i>
+            <p>Kamu belum memiliki sertifikat.</p>
+            <p style="font-size:13px;margin-top:6px;">Sertifikat akan muncul setelah admin menerbitkannya.</p>
+        </div>`;
+    } else {
+        area.innerHTML = milik.map(s => `
+        <div class="sertif-card">
+            <i class="fa-solid fa-award"></i>
+            <div>
+                <h2>${s.workshop}</h2>
+                <p>Diterbitkan: ${s.tanggal}</p>
+            </div>
+        </div>`).join('');
+    }
+}
+</script>
+</body>
+</html>

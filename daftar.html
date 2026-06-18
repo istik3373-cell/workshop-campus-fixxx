@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Pendaftaran Workshop</title>
+
+<link rel="stylesheet" href="css/daftar.css">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+</head>
+
+<body>
+
+<div class="background"></div>
+
+<div class="container">
+
+    <div class="form-box">
+
+        <h1>Pendaftaran Workshop</h1>
+
+        <p>
+            Silakan isi data diri untuk mengikuti workshop.
+        </p>
+
+        <form id="formDaftar">
+
+            <input
+            type="text"
+            id="nama"
+            placeholder="Nama Lengkap"
+            required>
+
+            <input
+            type="email"
+            id="email"
+            placeholder="Email"
+            required>
+
+            <input
+            type="text"
+            id="nim"
+            placeholder="NIM"
+            required>
+
+            <select id="workshop">
+
+                <option value="Web Developer">
+                    Web Developer
+                </option>
+
+                <option value="UI/UX Design">
+                    UI/UX Design
+                </option>
+
+                <option value="Cyber Security">
+                    Cyber Security
+                </option>
+
+                <option value="Mobile Developer">
+                    Mobile Developer
+                </option>
+
+            </select>
+
+            <button type="submit">
+                Daftar Sekarang
+            </button>
+
+        </form>
+
+    </div>
+
+</div>
+
+<script src="js/daftar.js"></script>
+
+</body>
+</html>

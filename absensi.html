@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Absensi</title>
+<link rel="stylesheet" href="css/dashboard.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+<style>
+.btn-hadir {
+    background: #22c55e;
+    color: white;
+    border: none;
+    padding: 5px 14px;
+    border-radius: 20px;
+    cursor: pointer;
+    font-size: 13px;
+    font-weight: 500;
+    margin-right: 4px;
+    transition: 0.2s;
+}
+.btn-hadir:hover { opacity: 0.85; }
+.btn-tidak {
+    background: #ef4444;
+    color: white;
+    border: none;
+    padding: 5px 14px;
+    border-radius: 20px;
+    cursor: pointer;
+    font-size: 13px;
+    font-weight: 500;
+    transition: 0.2s;
+}
+.btn-tidak:hover { opacity: 0.85; }
+.btn-hadir.active-btn { box-shadow: 0 0 0 3px #bbf7d0; }
+.btn-tidak.active-btn { box-shadow: 0 0 0 3px #fecaca; }
+</style>
+</head>
+<body>
+
+<div class="bg"></div>
+
+<div class="sidebar">
+    <div class="logo"><h2>Workshop</h2></div>
+    <ul>
+        <a href="dashboard.html"><li><i class="fa-solid fa-chart-line"></i> Dashboard</li></a>
+        <a href="peserta.html"><li><i class="fa-solid fa-users"></i> Peserta</li></a>
+        <a href="absensi.html"><li class="active"><i class="fa-solid fa-calendar-check"></i> Absensi</li></a>
+        <a href="sertifikat.html"><li><i class="fa-solid fa-award"></i> Sertifikat</li></a>
+        <a href="index.html"><li><i class="fa-solid fa-right-from-bracket"></i> Logout</li></a>
+    </ul>
+</div>
+
+<div class="main-content">
+    <div class="topbar">
+        <div class="title">
+            <h1>Data Absensi</h1>
+            <p>Kelola kehadiran peserta workshop</p>
+        </div>
+    </div>
+
+    <div class="table-box">
+        <table>
+            <thead>
+                <tr>
+                    <th>No</th>
+                    <th>Nama</th>
+                    <th>Workshop</th>
+                    <th>Status</th>
+                    <th>Aksi</th>
+                </tr>
+            </thead>
+            <tbody id="bodyAbsensi">
+                <tr><td colspan="5" style="text-align:center;color:#999;">Memuat data...</td></tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<script>
+function renderAbsensi() {
+    const data = JSON.parse(localStorage.getItem("peserta")) || [];
+    const tbody = document.getElementById("bodyAbsensi");
+    if (data.length === 0) {
+        tbody.innerHTML = `<tr><td colspan="5" style="text-align:center;color:#999;">Belum ada peserta terdaftar.</td></tr>`;
+        return;
+    }
+    tbody.innerHTML = data.map((p, i) => {
+        const hadir = (p.status === "Hadir");
+        return `
+        <tr id="row-${i}">
+            <td>${i + 1}</td>
+            <td>${p.nama}</td>
+            <td>${p.workshop}</td>
+            <td id="status-${i}">
+                <span class="${hadir ? 'success' : 'danger'}">${p.status || 'Tidak Hadir'}</span>
+            </td>
+            <td>
+                <button class="btn-hadir ${hadir ? 'active-btn' : ''}" onclick="setStatus(${i}, 'Hadir')">
+                    <i class="fa-solid fa-check"></i> Hadir
+                </button>
+                <button class="btn-tidak ${!hadir ? 'active-btn' : ''}" onclick="setStatus(${i}, 'Tidak Hadir')">
+                    <i class="fa-solid fa-xmark"></i> Tidak
+                </button>
+            </td>
+        </tr>`;
+    }).join('');
+}
+
+function setStatus(index, status) {
+    let data = JSON.parse(localStorage.getItem("peserta")) || [];
+    data[index].status = status;
+    localStorage.setItem("peserta", JSON.stringify(data));
+    renderAbsensi();
+}
+
+renderAbsensi();
+</script>
+</body>
+</html>

@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Absensi Saya</title>
+<link rel="stylesheet" href="css/dashboardpeserta.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+<style>
+.absensi-box {
+    background: white;
+    border-radius: 16px;
+    padding: 28px;
+    margin: 20px 0;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.07);
+}
+.status-badge {
+    display: inline-block;
+    padding: 8px 24px;
+    border-radius: 24px;
+    font-weight: 700;
+    font-size: 18px;
+    margin-top: 12px;
+}
+.hadir { background: #dcfce7; color: #16a34a; }
+.tidak-hadir { background: #fee2e2; color: #dc2626; }
+.belum { background: #f1f5f9; color: #94a3b8; }
+</style>
+</head>
+<body>
+<div class="dashboard">
+    <div class="sidebar">
+        <h2>Workshop</h2>
+        <ul>
+            <li><a href="dashboardpeserta.html"><i class="fa-solid fa-house"></i> Dashboard</a></li>
+            <li><a href="workshoppeserta.html"><i class="fa-solid fa-book"></i> Workshop Saya</a></li>
+            <li class="active"><a href="absensipeserta.html"><i class="fa-solid fa-calendar-check"></i> Absensi</a></li>
+            <li><a href="sertifikatpeserta.html"><i class="fa-solid fa-award"></i> Sertifikat</a></li>
+            <li><a href="login.html" onclick="return confirm('Yakin ingin logout?')"><i class="fa-solid fa-right-from-bracket"></i> Logout</a></li>
+        </ul>
+    </div>
+    <div class="main-content">
+        <div class="header">
+            <h1>Absensi Saya</h1>
+            <p>Status kehadiran workshop kamu</p>
+        </div>
+        <div class="absensi-box">
+            <h3 style="margin-bottom:8px;">Status Kehadiran</h3>
+            <div id="absensiInfo"><p style="color:#999;">Memuat data...</p></div>
+        </div>
+    </div>
+</div>
+<script>
+const user = JSON.parse(localStorage.getItem("userLogin"));
+const div = document.getElementById("absensiInfo");
+if (user) {
+    const semua = JSON.parse(localStorage.getItem("peserta")) || [];
+    const data = semua.find(p => p.email === user.email) || user;
+    const status = data.status || 'Belum Dicatat';
+    let cls = 'belum';
+    if (status === 'Hadir') cls = 'hadir';
+    else if (status === 'Tidak Hadir') cls = 'tidak-hadir';
+    div.innerHTML = `
+        <p><strong>Nama</strong> : ${data.nama}</p>
+        <p><strong>Workshop</strong> : ${data.workshop}</p>
+        <div class="status-badge ${cls}">${status}</div>
+    `;
+} else {
+    div.innerHTML = `<p style="color:#999;">Silakan <a href="login.html">login</a> terlebih dahulu.</p>`;
+}
+</script>
+</body>
+</html>
